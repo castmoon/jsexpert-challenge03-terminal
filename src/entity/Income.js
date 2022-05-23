@@ -1,39 +1,56 @@
 import languageConfig from '../config/language.js';
+import crypto from 'crypto';
 
 const defaultLanguage = languageConfig.default;
 
 class Income {
-  constructor({
-    position,
-    expectation,
-    conversion01,
-    conversion02,
-    conversion03,
-  }) {
-    this.position = position;
-    this.expectation = expectation || { currency: 'BRL', language: 'pt-BR' };
-    this.conversion01 = conversion01 || { currency: 'USD', language: 'en-US' };
-    this.conversion02 = conversion02 || { currency: 'EUR', language: 'en-GB' };
-    this.conversion03 = conversion03 || { currency: 'RUB', language: 'ru-RU' };
-  }
+	constructor({
+		position,
+		expectation,
+		conversion01,
+		conversion02,
+		conversion03,
+	}) {
+		this.id = crypto.randomUUID();
+		this.position = position;
+		this.expectation = expectation || {
+			currency: 'BRL',
+			language: 'pt-BR',
+		};
+		this.conversion01 = conversion01 || {
+			currency: 'USD',
+			language: 'en-US',
+		};
+		this.conversion02 = conversion02 || {
+			currency: 'EUR',
+			language: 'en-GB',
+		};
+		this.conversion03 = conversion03 || {
+			currency: 'RUB',
+			language: 'ru-RU',
+		};
+	}
 
-  format() {
-    return {
-      id: this.id,
-      position: this.position,
-      expectation: Income.formatCurrency(this.expectation),
-      conversion01: Income.formatCurrency(this.conversion01),
-      conversion02: Income.formatCurrency(this.conversion02),
-      conversion03: Income.formatCurrency(this.conversion03),
-    };
-  }
+	format() {
+		return {
+			id: this.id,
+			position: this.position,
+			expectation: Income.formatCurrency(this.expectation),
+			conversion01: Income.formatCurrency(this.conversion01),
+			conversion02: Income.formatCurrency(this.conversion02),
+			conversion03: Income.formatCurrency(this.conversion03),
+		};
+	}
 
-  static formatCurrency({ currency, value, language }) {
-    const _language = language || defaultLanguage;
+	static formatCurrency({ currency, value, language }) {
+		const _language = language || defaultLanguage;
 
-    // TODO: Implement method
-    return null;
-  }
+		const formattedValue = new Intl.NumberFormat(_language, {
+			style: 'currency',
+			currency,
+		}).format(value);
+		return formattedValue;
+	}
 }
 
 export default Income;

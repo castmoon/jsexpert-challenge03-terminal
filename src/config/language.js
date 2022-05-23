@@ -1,3 +1,3 @@
 export default {
-  default: 'pt-BR',
-}
+	default: 'pt-BR',
+};
